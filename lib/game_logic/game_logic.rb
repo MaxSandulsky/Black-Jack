@@ -11,36 +11,35 @@ class Gamelogic
   
   def initialize(player)
     self.player = player
-    p = PileOfCards.new
-    p.gen_deck
-    p.mixer!
-    self.dealer = Dealer.new( money: 100, hand: PileOfCards.new, pile: p)
+    self.dealer = Dealer.new( money: 100, hand: PileOfCards.new, pile: PileOfCards.newdeck)
   end
   
   def player_action(action)
     case action
     when 'distribute'
+      hands_wash
       2.times { draw }
     when 'draw'
       draw
-    when 'pass'
-      pass
     when 'reveal'
       reveal
     end
     condition_check
   end
   
+  def dealer_action
+    2.times { dealer.get_card }
+    dealer.get_card if dealer_score < 17
+    dealer.reveal
+  end
+  
   def draw
     player.get_card(dealer.draw_card)
   end
   
-  def pass
-    
-  end
-  
   def reveal
-    
+    2.times { dealer.get_card }
+    dealer.reveal
   end
   
   def player_score
@@ -51,15 +50,19 @@ class Gamelogic
     dealer.score(RULE_BOOKKEEPING)
   end
   
-  def condition_check
-    puts player_score, dealer_score
-    return self.condition = 'Player Black Jack' if player_score == 21
-    return self.condition = 'Dealer Black Jack' if dealer_score == 21
-    return self.condition = 'Player loose' if player_score > 21 || player_score < dealer_score
-    return self.condition = 'Player won' if player_score > dealer_score && !dealer_score.zero?
-    return self.condition = 'Draw' if player_score == dealer_score
-    false
+  def hands_wash
+    player.drop_hand
+    dealer.drop_hand
   end
   
-  attr_accessor :player, :dealer, :condition
+  def condition_check
+    return 'Player Black Jack' if player_score == 21
+    return 'Dealer Black Jack' if dealer_score == 21
+    return 'Player loose' if player_score > 21 || (player_score < dealer_score && dealer_score < 21)
+    return 'Player won' if dealer_score > 21 || (player_score > dealer_score && dealer_score > 0)
+    return 'Draw' if player_score == dealer_score
+    nil
+  end
+  
+  attr_accessor :player, :dealer
 end

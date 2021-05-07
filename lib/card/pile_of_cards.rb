@@ -46,14 +46,17 @@ class PileOfCards
     self.cards.pop
   end
   
-  def gen_deck(number = 1)
+  def self.newdeck(number = 1)
     values = (2..10).to_a
-    values += ['J', 'D', 'K', 'A']
-    suits = ['♠', '♣', '♥', '♦']
+    values += Card::COURTS
     deck_template = []
-    suits.each { |suit| deck_template = deck_template + (values.map { |card| card.to_s + suit.to_s })}
+    cards = []
+    Card::SUITS.each { |suit| deck_template = deck_template + (values.map { |card| card.to_s + suit.to_s })}
     number.times do
-      deck_template.each { |value| self.cards.push(Card.new(value)) }
+      deck_template.each { |value| cards.push(Card.new(value)) }
     end
+    p = PileOfCards.new(cards)
+    p.mixer!
+    p
   end
 end

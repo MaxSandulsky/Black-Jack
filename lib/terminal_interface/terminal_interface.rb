@@ -17,28 +17,26 @@ class TerminalInterface
   
   protected
   
-  attr_accessor :exit_status, :game
+  attr_accessor :exit_status, :game, :game_state
   
   def new_game
     puts 'Enter your name please:'
     self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: PileOfCards.new))
+    self.game_state = 'play'
   end
   
   def cycle
     until exit_status
       interface
-      results
     end
-  rescue RuntimeError => e
-    puts e.inspect
-  end
-  
-  def game_state
-    'play'
   end
   
   def player_action(action)
     game.player_action(action)
+  end
+  
+  def dealer_action
+    game.dealer_action
   end
   
   def ask_for_action
@@ -57,10 +55,17 @@ class TerminalInterface
     reaction(player_action('distribute'))
     player_score
     reaction(player_action(ask_for_action))
+    dealer_action
   end
   
   def menu
-    
+    puts 'Want to continue? Y/n'
+    case gets.chomp
+    when /Y|y/
+      self.game_state = 'play'
+    when /N|n/
+      self.exit_status = true
+    end
   end
   
   def reaction(state)
@@ -82,9 +87,13 @@ class TerminalInterface
     case game_state
     when 'play'
       play
+      results
+      self.game_state = 'menu'
     when 'menu'
       menu
     end
+  rescue RuntimeError => e
+    puts e.inspect
   end
   
   def player_score
@@ -96,6 +105,8 @@ class TerminalInterface
   end
   
   def results
-    puts "some result"
+    puts game.condition_check
+    player_score
+    dealer_score
   end
 end
