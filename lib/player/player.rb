@@ -1,7 +1,6 @@
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
-require '/home/maxim/NetBeansProjects/Black Jack/lib/Validations/validations.rb'
 
 class Player
   include Validations
@@ -9,10 +8,10 @@ class Player
   attr_accessor :name
   attr_reader :bank
   
-  validate(:var => 'name', :val => 'type', :arg => 'String')
-  validate(:var => 'hand', :val => 'type', :arg => 'PileOfCards')
+  validate var: 'name', val: 'type', arg: 'String'
+  validate var: 'hand', val: 'type', arg: 'PileOfCards'
   
-  def initialize(name: 'Name', money: 'Money', hand: 'Hand')
+  def initialize(name: , money: , hand: )
     self.name = name
     profit_margin money
     self.hand = hand
@@ -36,8 +35,8 @@ class Player
     hand.erase
   end
   
-  def valuate
-    hand.count_value
+  def score(rule)
+    hand.count_value(rule)
   end
   
   def show

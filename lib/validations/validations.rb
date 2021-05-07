@@ -52,17 +52,5 @@ module Validations
       puts e.inspect
       false
     end
-    
-    def nil_validation(object)
-      raise "#{object} is null!" if object.nil?
-    end
-    
-    def looser?
-      self.valuate > 21
-    end
-    
-    def black_jack?
-      self.valuate == 21
-    end
   end
 end

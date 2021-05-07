@@ -1,22 +1,22 @@
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
-require_relative 'Card/card.rb'
-require_relative 'Card/pile_of_cards.rb'
-require_relative 'Player/player.rb'
-require_relative 'Dealer/dealer.rb'
-require_relative 'Validations/validations.rb'
+require_relative 'validations/validations.rb'
+require_relative 'card/card.rb'
+require_relative 'card/pile_of_cards.rb'
+require_relative 'player/player.rb'
+require_relative 'dealer/dealer.rb'
+require_relative 'game_logic/game_logic.rb'
+require_relative 'terminal_interface/terminal_interface.rb'
 
 class Game
-  NUMBER_OF_DECKS = 2
-
   def new_game
     puts 'Enter your name please:'
-    @player = Player.new(:name => gets.chomp, :money => 100, :hand => PileOfCards.new)
+    @player = Player.new(name: gets.chomp, money: 100, hand: PileOfCards.new)
     newdeck = PileOfCards.new
     newdeck.gen_deck NUMBER_OF_DECKS
     newdeck.mixer!
-    @dealer = Dealer.new(:money => 100, :hand => PileOfCards.new, :pile => newdeck)
+    @dealer = Dealer.new(money: 100, hand: PileOfCards.new, pile: newdeck)
   end
   
   def cycle
@@ -70,7 +70,6 @@ class Game
   
   def show_players_hand
     puts "Your hand:#{@player.show}, value:#{@player.valuate}, money left:#{@player.bank}"
-    states(@player)
   end
   
   def show_dealers_hand
@@ -132,6 +131,9 @@ class Game
   end
 end
 
-g = Game.new
+#g = Game.new
+#
+#g.game_start
 
-g.game_start
+t = TerminalInterface.new
+t.start
