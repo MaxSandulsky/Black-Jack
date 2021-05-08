@@ -51,6 +51,23 @@ class TerminalInterface
     end
   end
   
+  def bets
+    puts "Make your bet and lets the fortune be with you"
+    game.keep_bets(gets.to_i)
+  end
+  
+  def revenue(state)
+    case state
+    when 'Player Black Jack', 'Player won'
+      game.result_won
+    when 'Dealer Black Jack', 'Player loose'
+      game.result_loose
+    when 'Draw'
+      game.result_draw
+    end
+    game.bet
+  end
+  
   def play
     reaction(player_action('distribute'))
     player_score
@@ -69,31 +86,20 @@ class TerminalInterface
   end
   
   def reaction(state)
-    case state
-    when 'Player Black Jack'
-      raise "You got #{state}"
-    when 'Dealer Black Jack'
-      raise "You got #{state}"
-    when 'Player loose'
-      raise "You got #{state}"
-    when 'Player won'
-      raise "You got #{state}"
-    when 'Draw'
-      raise "You got #{state}"
-    end
+    raise "You got #{state}" unless state.nil?
   end
   
   def interface
     case game_state
     when 'play'
+      bets
       play
       results
-      self.game_state = 'menu'
     when 'menu'
       menu
     end
   rescue RuntimeError => e
-    puts e.inspect
+    results
   end
   
   def player_score
@@ -108,5 +114,7 @@ class TerminalInterface
     puts game.condition_check
     player_score
     dealer_score
+    revenue(game.condition_check)
+    self.game_state = 'menu'
   end
 end

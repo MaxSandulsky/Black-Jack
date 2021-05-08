@@ -26,7 +26,7 @@ class Dealer < Player
   end
   
   def shuffle
-    pile.gen_deck
+    self.pile = PileOfCards.newdeck
     pile.mixer!
   end
   
@@ -36,15 +36,6 @@ class Dealer < Player
   
   def length
     pile.cards.length
-  end
-  
-  def keep_bet(value)
-    bet(value)
-    @bet = value * 2
-  end
-  
-  def release_bet
-    @bet
   end
   
   protected

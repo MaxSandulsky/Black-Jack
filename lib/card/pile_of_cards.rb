@@ -50,13 +50,11 @@ class PileOfCards
     values = (2..10).to_a
     values += Card::COURTS
     deck_template = []
-    cards = []
     Card::SUITS.each { |suit| deck_template = deck_template + (values.map { |card| card.to_s + suit.to_s })}
+    deck = []
     number.times do
-      deck_template.each { |value| cards.push(Card.new(value)) }
+      deck_template.each { |value| deck.push(Card.new(value)) }
     end
-    p = PileOfCards.new(cards)
-    p.mixer!
-    p
+    PileOfCards.new(deck)
   end
 end

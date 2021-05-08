@@ -3,6 +3,8 @@
 # and open the template in the editor.
 
 class Gamelogic
+  attr_accessor :player, :dealer, :bet
+  
   RULE_BOOKKEEPING = ->(card) do
     return card.value.to_i unless card.value !~ /^\d/
     return 10 unless card.value !~ /^(J|D|K)/
@@ -11,13 +13,16 @@ class Gamelogic
   
   def initialize(player)
     self.player = player
-    self.dealer = Dealer.new( money: 100, hand: PileOfCards.new, pile: PileOfCards.newdeck)
+    deck = PileOfCards.newdeck
+    deck.mixer!
+    self.dealer = Dealer.new( money: 100, hand: PileOfCards.new, pile: deck)
   end
   
   def player_action(action)
     case action
     when 'distribute'
       hands_wash
+      dealer.shuffle if dealer.length < 6
       2.times { draw }
     when 'draw'
       draw
@@ -55,6 +60,12 @@ class Gamelogic
     dealer.drop_hand
   end
   
+  def keep_bets(value)
+    player.bet(value)
+    dealer.bet(value)
+    self.bet = 2 * value
+  end
+  
   def condition_check
     return 'Player Black Jack' if player_score == 21
     return 'Dealer Black Jack' if dealer_score == 21
@@ -64,5 +75,16 @@ class Gamelogic
     nil
   end
   
-  attr_accessor :player, :dealer
+  def result_won
+    player.profit_margin(bet)
+  end
+  
+  def result_loose
+    dealer.profit_margin(bet)
+  end
+  
+  def result_draw
+    dealer.profit_margin(bet / 2)
+    player.profit_margin(bet / 2)
+  end
 end
