@@ -16,19 +16,24 @@ module Validations
       @validations.push(args)
     end
 
-    def type_validation(attribute, type, obj)
+        self.class.type_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'type'
+        self.class.presence_validation(hash[:var], self) if hash[:val] == 'presence'
+        self.class.format_validation(hash[:var], hash[:arg], self) if hash[:val] == 'format'
+        self.class.array_type_var_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'array_type'
+        #Разбить хэш, сделать оболочку
+    def type(hash attribute, type, obj)
       raise "Wrong object type! Expected #{type}, but got #{obj.send(attribute).class.to_s}" if obj.send(attribute).class.to_s != type && attribute.class.to_s != NilClass
     end
     
-    def presence_validation(attribute, obj)
+    def presence(attribute, obj)
       raise "#{attribute} not presented!" if obj.send(attribute).nil? || obj.send(attribute).to_s.empty?
     end
     
-    def format_validation(attribute, format, obj)
+    def format(attribute, format, obj)
       raise "#{obj.send(attribute)} in the wrong format!" if obj.send(attribute) !~ format
     end
     
-    def array_type_var_validation(array, type, obj)
+    def array_type(array, type, obj)
       obj.send(array).each do |attribute|
         raise "Wrong object type! Expected #{type}, but got #{attribute.class.to_s}" if attribute.class.to_s != type && attribute.class.to_s != NilClass
       end
@@ -38,10 +43,7 @@ module Validations
   module InstanceMethods
     def validate!
       self.class.instance_variable_get('@validations').each do |hash|
-        self.class.type_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'type'
-        self.class.presence_validation(hash[:var], self) if hash[:val] == 'presence'
-        self.class.format_validation(hash[:var], hash[:arg], self) if hash[:val] == 'format'
-        self.class.array_type_var_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'array_type'
+        self.class.public_send(hash[:val].to_sym, hash)
       end
     end
 
