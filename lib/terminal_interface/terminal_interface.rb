@@ -103,18 +103,18 @@ class TerminalInterface
   end
   
   def player_score
-    puts "Your hand:#{game.player.show}, value:#{game.player_score}, money left:#{game.player.bank}"
+    puts "Your hand:#{game.player.show}, value:#{game.player_score}, left: $#{game.player.bank}"
   end
   
   def dealer_score
-    puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, money left:#{game.dealer.bank}"
+    puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, left: $#{game.dealer.bank}"
   end
   
   def results
-    puts game.condition_check
+    puts "#{game.condition_check} $#{game.bet} profit"
+    revenue(game.condition_check)
     player_score
     dealer_score
-    revenue(game.condition_check)
     self.game_state = 'menu'
   end
 end

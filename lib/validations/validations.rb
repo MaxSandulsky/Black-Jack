@@ -16,26 +16,21 @@ module Validations
       @validations.push(args)
     end
 
-        self.class.type_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'type'
-        self.class.presence_validation(hash[:var], self) if hash[:val] == 'presence'
-        self.class.format_validation(hash[:var], hash[:arg], self) if hash[:val] == 'format'
-        self.class.array_type_var_validation(hash[:var], hash[:arg].to_s, self) if hash[:val] == 'array_type'
-        #Разбить хэш, сделать оболочку
-    def type(hash attribute, type, obj)
-      raise "Wrong object type! Expected #{type}, but got #{obj.send(attribute).class.to_s}" if obj.send(attribute).class.to_s != type && attribute.class.to_s != NilClass
+    def type(hash, obj)
+      raise "Wrong object type! Expected #{hash[:arg].to_s}, but got #{obj.send(hash[:var]).class.to_s}" if obj.send(hash[:var]).class.to_s != hash[:arg].to_s && hash[:var].class.to_s != NilClass
     end
     
-    def presence(attribute, obj)
-      raise "#{attribute} not presented!" if obj.send(attribute).nil? || obj.send(attribute).to_s.empty?
+    def presence(hash, obj)
+      raise "#{hash[:var]} not presented!" if obj.send(hash[:var]).nil? || obj.send(hash[:var]).to_s.empty?
     end
     
-    def format(attribute, format, obj)
-      raise "#{obj.send(attribute)} in the wrong format!" if obj.send(attribute) !~ format
+    def format(hash, obj)
+      raise "#{obj.send(hash[:var])} in the wrong format!" if obj.send(hash[:var]) !~ hash[:arg]
     end
     
-    def array_type(array, type, obj)
-      obj.send(array).each do |attribute|
-        raise "Wrong object type! Expected #{type}, but got #{attribute.class.to_s}" if attribute.class.to_s != type && attribute.class.to_s != NilClass
+    def array_type(hash, obj)
+      obj.send(hash[:var]).each do |attribute|
+        raise "Wrong object type! Expected #{hash[:arg].to_s}, but got #{attribute.class.to_s}" if attribute.class.to_s != hash[:arg].to_s && attribute.class.to_s != NilClass
       end
     end
   end
@@ -43,7 +38,7 @@ module Validations
   module InstanceMethods
     def validate!
       self.class.instance_variable_get('@validations').each do |hash|
-        self.class.public_send(hash[:val].to_sym, hash)
+        self.class.public_send(hash[:val].to_sym, hash, self)
       end
     end
 
