@@ -17,7 +17,9 @@ module Validations
     end
 
     def type(hash, obj)
-      raise "Wrong object type! Expected #{hash[:arg]}, but got #{obj.send(hash[:var]).class}" if obj.send(hash[:var]).class.to_s != hash[:arg].to_s && hash[:var].class.to_s != NilClass
+      if obj.send(hash[:var]).class.to_s != hash[:arg].to_s && hash[:var].class.to_s != NilClass
+          raise "Wrong object type! Expected #{hash[:arg]}, but got #{obj.send(hash[:var]).class}" 
+      end
     end
 
     def presence(hash, obj)
@@ -29,9 +31,10 @@ module Validations
     end
 
     def array_type(hash, obj)
-      puts '+'
       obj.send(hash[:var]).each do |attribute|
-        raise "Wrong object type! Expected #{hash[:arg]}, but got #{attribute.class}" if attribute.class.to_s != hash[:arg].to_s && attribute.class.to_s != NilClass
+        if attribute.class.to_s != hash[:arg].to_s && attribute.class.to_s != NilClass
+            raise "Wrong object type! Expected #{hash[:arg]}, but got #{attribute.class}"
+        end
       end
     end
   end
