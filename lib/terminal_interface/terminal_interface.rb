@@ -27,6 +27,8 @@ class TerminalInterface
 
   def cycle
     interface until exit_status
+  rescue RuntimeError => e
+    
   end
 
   def player_action(action)
@@ -74,6 +76,10 @@ class TerminalInterface
   end
 
   def menu
+    (game.player_bank > 0 || game.dealer_bank > 0) ? continue? : raise NotEnoughMoneyError
+  end
+
+  def continue?
     puts 'Want to continue? Y/n'
     case gets.chomp
     when /Y|y/
@@ -82,7 +88,7 @@ class TerminalInterface
       self.exit_status = true
     end
   end
-
+  
   def reaction(state)
     raise "You got #{state}" unless state.nil?
   end

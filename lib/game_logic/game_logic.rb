@@ -87,4 +87,12 @@ class Gamelogic
     dealer.profit_margin(bet / 2)
     player.profit_margin(bet / 2)
   end
+  
+  def player_bank
+    player.bank
+  end
+  
+  def dealer_bank
+    dealer.bank
+  end
 end
