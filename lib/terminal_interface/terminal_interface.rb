@@ -1,6 +1,9 @@
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
+class GameHandler
+  class NotEnoughMoneyError < StandardError; end
+end
 
 class TerminalInterface
   def start
@@ -27,8 +30,10 @@ class TerminalInterface
 
   def cycle
     interface until exit_status
-  rescue RuntimeError => e
-    
+  rescue GameHandler::NotEnoughMoneyError => e    
+    self.game_state = 'menu'
+    puts 'Not enough money!'
+    cycle
   end
 
   def player_action(action)
@@ -76,10 +81,6 @@ class TerminalInterface
   end
 
   def menu
-    (game.player_bank > 0 || game.dealer_bank > 0) ? continue? : raise NotEnoughMoneyError
-  end
-
-  def continue?
     puts 'Want to continue? Y/n'
     case gets.chomp
     when /Y|y/
@@ -97,7 +98,7 @@ class TerminalInterface
     case game_state
     when 'play'
       bets
-      play
+      (game.player_bank > 0 && game.dealer_bank > 0) ? play : (raise GameHandler::NotEnoughMoneyError)
       results
     when 'menu'
       menu

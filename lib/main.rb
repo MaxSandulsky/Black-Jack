@@ -9,9 +9,7 @@ require_relative 'dealer/dealer.rb'
 require_relative 'game_logic/game_logic.rb'
 require_relative 'terminal_interface/terminal_interface.rb'
 
-class GameHandler
-  NotEnoughMoneyError
-end
+
 
 # g = Game.new
 #
