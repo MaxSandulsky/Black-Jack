@@ -45,7 +45,7 @@ class TerminalInterface
   end
 
   def ask_for_action
-    puts 'Press 1, 2, 3'
+    puts 'Press 1 to draw, 2 to skip, 3 to reveal'
     case gets.to_i
     when 1
       'draw'
@@ -57,8 +57,10 @@ class TerminalInterface
   end
 
   def bets
-    puts 'Make your bet and lets the fortune be with you'
-    game.keep_bets(gets.to_i)
+    puts "You have $#{game.player_bank}, bank have $#{game.dealer_bank}\nMake your bet"
+    bet = gets.to_i
+    raise GameHandler::NotEnoughMoneyError if game.player_bank < bet || game.dealer_bank < bet
+    game.keep_bets(bet)
   end
 
   def revenue(state)
@@ -98,7 +100,7 @@ class TerminalInterface
     case game_state
     when 'play'
       bets
-      (game.player_bank > 0 && game.dealer_bank > 0) ? play : (raise GameHandler::NotEnoughMoneyError)
+      play
       results
     when 'menu'
       menu
@@ -108,11 +110,11 @@ class TerminalInterface
   end
 
   def player_score
-    puts "Your hand:#{game.player.show}, value:#{game.player_score}, left: $#{game.player.bank}"
+    puts "Your hand:#{game.player.show}, value:#{game.player_score}, left: $#{game.player_bank}"
   end
 
   def dealer_score
-    puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, left: $#{game.dealer.bank}"
+    puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, left: $#{game.dealer_bank}"
   end
 
   def results
