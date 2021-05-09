@@ -14,31 +14,29 @@ class TerminalInterface
     else start
     end
   end
-  
+
   protected
-  
+
   attr_accessor :exit_status, :game, :game_state
-  
+
   def new_game
     puts 'Enter your name please:'
     self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: PileOfCards.new))
     self.game_state = 'play'
   end
-  
+
   def cycle
-    until exit_status
-      interface
-    end
+    interface until exit_status
   end
-  
+
   def player_action(action)
     game.player_action(action)
   end
-  
+
   def dealer_action
     game.dealer_action
   end
-  
+
   def ask_for_action
     puts 'Press 1, 2, 3'
     case gets.to_i
@@ -50,12 +48,12 @@ class TerminalInterface
       'reveal'
     end
   end
-  
+
   def bets
-    puts "Make your bet and lets the fortune be with you"
+    puts 'Make your bet and lets the fortune be with you'
     game.keep_bets(gets.to_i)
   end
-  
+
   def revenue(state)
     case state
     when 'Player Black Jack', 'Player won'
@@ -67,14 +65,14 @@ class TerminalInterface
     end
     game.bet
   end
-  
+
   def play
     reaction(player_action('distribute'))
     player_score
     reaction(player_action(ask_for_action))
     dealer_action
   end
-  
+
   def menu
     puts 'Want to continue? Y/n'
     case gets.chomp
@@ -84,11 +82,11 @@ class TerminalInterface
       self.exit_status = true
     end
   end
-  
+
   def reaction(state)
     raise "You got #{state}" unless state.nil?
   end
-  
+
   def interface
     case game_state
     when 'play'
@@ -101,15 +99,15 @@ class TerminalInterface
   rescue RuntimeError => e
     results
   end
-  
+
   def player_score
     puts "Your hand:#{game.player.show}, value:#{game.player_score}, left: $#{game.player.bank}"
   end
-  
+
   def dealer_score
     puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, left: $#{game.dealer.bank}"
   end
-  
+
   def results
     puts "#{game.condition_check} $#{game.bet} profit"
     revenue(game.condition_check)

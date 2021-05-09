@@ -4,47 +4,47 @@
 
 class Player
   include Validations
-  
+
   attr_accessor :name
   attr_reader :bank
-  
+
   validate var: 'name', val: 'type', arg: 'String'
   validate var: 'hand', val: 'type', arg: 'PileOfCards'
-  
-  def initialize(name: , money: , hand: )
+
+  def initialize(name:, money:, hand:)
     self.name = name
     profit_margin money
     self.hand = hand
     validate!
   end
-  
+
   def bet(value)
     self.bank -= value
   end
-  
+
   def profit_margin(value)
     self.bank = bank.to_i + value
   end
-  
+
   def get_card(card)
     card.explicit
     hand.add(card)
   end
-  
+
   def drop_hand
     hand.erase
   end
-  
+
   def score(rule)
     hand.count_value(rule)
   end
-  
+
   def show
     hand.show
   end
-  
+
   protected
-  
+
   attr_accessor :hand
   attr_writer :bank
 end

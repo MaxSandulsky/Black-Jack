@@ -1,8 +1,7 @@
-# 
+#
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
- 
 
 require 'rubygems'
 require 'rake'
@@ -15,15 +14,15 @@ spec = Gem::Specification.new do |s|
   s.name = 'Black Jerk'
   s.version = '0.0.1'
   s.has_rdoc = true
-  s.extra_rdoc_files = ['README', 'LICENSE']
+  s.extra_rdoc_files = %w[README LICENSE]
   s.summary = 'Your summary here'
   s.description = s.summary
   s.author = ''
   s.email = ''
   # s.executables = ['your_executable_here']
-  s.files = %w(LICENSE README Rakefile) + Dir.glob("{bin,lib,spec}/**/*")
-  s.require_path = "lib"
-  s.bindir = "bin"
+  s.files = %w[LICENSE README Rakefile] + Dir.glob('{bin,lib,spec}/**/*')
+  s.require_path = 'lib'
+  s.bindir = 'bin'
 end
 
 Gem::PackageTask.new(spec) do |p|
@@ -33,10 +32,10 @@ Gem::PackageTask.new(spec) do |p|
 end
 
 Rake::RDocTask.new do |rdoc|
-  files =['README', 'LICENSE', 'lib/**/*.rb']
+  files = ['README', 'LICENSE', 'lib/**/*.rb']
   rdoc.rdoc_files.add(files)
-  rdoc.main = "README" # page to start on
-  rdoc.title = "Black Jerk Docs"
+  rdoc.main = 'README' # page to start on
+  rdoc.title = 'Black Jerk Docs'
   rdoc.rdoc_dir = 'doc/rdoc' # rdoc output folder
   rdoc.options << '--line-numbers'
 end
@@ -44,4 +43,3 @@ end
 Rake::TestTask.new do |t|
   t.test_files = FileList['test/**/*.rb']
 end
-
