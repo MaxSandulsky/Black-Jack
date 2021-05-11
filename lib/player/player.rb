@@ -10,7 +10,8 @@ class Player
 
   validate var: 'name', val: 'type', arg: 'String'
   validate var: 'hand', val: 'type', arg: 'Deck'
-
+  validate var: 'bank', val: 'type', arg: 'Integer'
+  
   def initialize(name:, money:, hand:)
     self.name = name
     self.bank = money

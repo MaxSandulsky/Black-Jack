@@ -8,10 +8,6 @@ require_relative 'player/player.rb'
 require_relative 'dealer/dealer.rb'
 require_relative 'game_logic/game_logic.rb'
 require_relative 'terminal_interface/terminal_interface.rb'
-
-# g = Game.new
-#
-# g.game_start
-
+  
 t = TerminalInterface.new
 t.start
