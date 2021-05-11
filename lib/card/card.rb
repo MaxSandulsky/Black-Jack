@@ -3,7 +3,7 @@
 # and open the template in the editor.
 
 class Card
-  COURTS = (2..10).to_a + ['J', 'D', 'K', 'A',]
+  COURTS = ("2".."10").to_a + ['J', 'D', 'K', 'A',]
   SUITS = %w[♠ ♣ ♥ ♦]
 
   include Validations
@@ -14,7 +14,7 @@ class Card
   validate var: 'suit', val: 'format', arg: /(♠|♣|♥|♦)/
   
   def initialize(value, suit)
-    self.value = value.to_s
+    self.value = value
     self.suit = suit
     validate!
   end
