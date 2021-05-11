@@ -20,7 +20,7 @@ class Dealer < Player
   end
 
   def shuffle
-    self.deck.generate_cards
+    deck.generate_cards
     deck.mixer!
   end
 

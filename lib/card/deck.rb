@@ -3,9 +3,8 @@
 # and open the template in the editor.
 
 class Deck
-  
   attr_accessor :cards
-  
+
   def initialize
     self.cards = []
     generate_cards
@@ -15,12 +14,12 @@ class Deck
   def mixer!
     cards.shuffle!
   end
-  
+
   def generate_cards
     Card::COURTS.each { |court| Card::SUITS.each { |suit| cards.push(Card.new(court, suit)) } }
   end
-  
+
   def draw
-    self.cards.pop
+    cards.pop
   end
 end

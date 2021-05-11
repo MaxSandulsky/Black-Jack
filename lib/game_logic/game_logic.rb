@@ -91,11 +91,11 @@ class Gamelogic
   def dealer_bank
     dealer.bank
   end
-  
+
   def player_hand
     player.on_hands
   end
-  
+
   def dealer_hand
     dealer.on_hands
   end
