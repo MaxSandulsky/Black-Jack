@@ -20,6 +20,7 @@ class Gamelogic
     case action
     when 'distribute'
       hands_wash
+      puts dealer.length
       dealer.shuffle if dealer.length < 6
       2.times { draw }
     when 'draw'
@@ -33,7 +34,6 @@ class Gamelogic
   def dealer_action
     2.times { dealer.get_card }
     dealer.get_card if dealer_score < 17
-    dealer.reveal
   end
 
   def draw
@@ -42,7 +42,6 @@ class Gamelogic
 
   def reveal
     2.times { dealer.get_card }
-    dealer.reveal
   end
 
   def player_score
@@ -92,5 +91,13 @@ class Gamelogic
 
   def dealer_bank
     dealer.bank
+  end
+  
+  def player_hand
+    player.on_hands
+  end
+  
+  def dealer_hand
+    dealer.on_hands
   end
 end

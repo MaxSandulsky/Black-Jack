@@ -24,8 +24,8 @@ class TerminalInterface
 
   def new_game
     puts 'Enter your name please:'
-    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: Deck.new),
-      Dealer.new(money: 100, hand: Deck.new, deck: Deck.new))
+    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: Hand.new),
+      Dealer.new(money: 100, hand: Hand.new, deck: Deck.new))
     self.game_state = 'play'
   end
 
@@ -111,11 +111,19 @@ class TerminalInterface
   end
 
   def player_score
-    puts "Your hand:#{game.player.show}, value:#{game.player_score}, left: $#{game.player_bank}"
+    puts "Your hand:#{player_hand}, value:#{game.player_score}, left: $#{game.player_bank}"
   end
 
   def dealer_score
-    puts "Dealers hand:#{game.dealer.show}, value:#{game.dealer_score}, left: $#{game.dealer_bank}"
+    puts "Dealers hand:#{dealer_hand}, value:#{game.dealer_score}, left: $#{game.dealer_bank}"
+  end
+  
+  def player_hand
+    game.player_hand.map { |card| card.value + card.suit }
+  end
+  
+  def dealer_hand
+    game.dealer_hand.map { |card| card.value + card.suit }
   end
 
   def results

@@ -9,7 +9,7 @@ class Player
   attr_reader :bank
 
   validate var: 'name', val: 'type', arg: 'String'
-  validate var: 'hand', val: 'type', arg: 'Deck'
+  validate var: 'hand', val: 'type', arg: 'Hand'
   validate var: 'bank', val: 'type', arg: 'Integer'
   
   def initialize(name:, money:, hand:)
@@ -28,20 +28,19 @@ class Player
   end
 
   def get_card(card)
-    card.explicit
     hand.add(card)
   end
 
   def drop_hand
-    hand.erase
+    hand.drop
   end
 
   def score(rule)
     hand.count_value(rule)
   end
 
-  def show
-    hand.show
+  def on_hands
+    hand.cards
   end
 
   protected

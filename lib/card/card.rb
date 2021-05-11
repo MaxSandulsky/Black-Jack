@@ -3,26 +3,19 @@
 # and open the template in the editor.
 
 class Card
-  COURTS = (2..10).to_a + %w[J D K A]
+  COURTS = (2..10).to_a + ['J', 'D', 'K', 'A',]
   SUITS = %w[♠ ♣ ♥ ♦]
 
   include Validations
 
-  attr_reader :value, :explicitness
+  attr_accessor :value, :suit
 
-  validate var: 'value', val: 'format', arg: /^(([2-9]|A|K|D|J)|(10))(♠|♣|♥|♦)/
-
-  def initialize(value)
-    self.explicitness = false
-    self.value = value
+  validate var: 'value', val: 'format', arg: /^([2-9]|A|K|D|J)|(10)/
+  validate var: 'suit', val: 'format', arg: /(♠|♣|♥|♦)/
+  
+  def initialize(value, suit)
+    self.value = value.to_s
+    self.suit = suit
     validate!
   end
-
-  def explicit
-    self.explicitness = true
-  end
-
-  protected
-
-  attr_writer :value, :explicitness
 end

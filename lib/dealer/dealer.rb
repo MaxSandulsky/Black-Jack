@@ -7,8 +7,6 @@ class Dealer < Player
 
   attr_reader :deck
 
-  validate var: 'name', val: 'type', arg: 'String'
-  validate var: 'hand', val: 'type', arg: 'Deck'
   validate var: 'deck', val: 'type', arg: 'Deck'
 
   def initialize(money:, hand:, deck:)
@@ -21,12 +19,7 @@ class Dealer < Player
     deck.draw
   end
 
-  def reveal
-    hand.cards.each(&:explicit)
-  end
-
   def shuffle
-    drop_deck
     self.deck.generate_cards
     deck.mixer!
   end
@@ -37,10 +30,6 @@ class Dealer < Player
 
   def length
     deck.cards.length
-  end
-  
-  def drop_deck
-    deck.erase
   end
 
   protected
