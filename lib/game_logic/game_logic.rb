@@ -11,10 +11,9 @@ class Gamelogic
     return 11 unless card.value !~ /^A/
   end
 
-  def initialize(player)
+  def initialize(player, dealer)
     self.player = player
-    self.dealer = Dealer.new(money: 100, hand: Deck.new, deck: Deck.new)
-    self.dealer.shuffle
+    self.dealer = dealer
   end
 
   def player_action(action)

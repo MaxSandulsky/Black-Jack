@@ -24,7 +24,8 @@ class TerminalInterface
 
   def new_game
     puts 'Enter your name please:'
-    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: Deck.new))
+    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: Deck.new),
+      Dealer.new(money: 100, hand: Deck.new, deck: Deck.new))
     self.game_state = 'play'
   end
 
