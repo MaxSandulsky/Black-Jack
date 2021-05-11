@@ -20,7 +20,6 @@ class Gamelogic
     case action
     when 'distribute'
       hands_wash
-      puts dealer.length
       dealer.shuffle if dealer.length < 6
       2.times { draw }
     when 'draw'
