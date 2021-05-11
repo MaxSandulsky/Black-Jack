@@ -9,11 +9,11 @@ class Player
   attr_reader :bank
 
   validate var: 'name', val: 'type', arg: 'String'
-  validate var: 'hand', val: 'type', arg: 'PileOfCards'
+  validate var: 'hand', val: 'type', arg: 'Deck'
 
   def initialize(name:, money:, hand:)
     self.name = name
-    profit_margin money
+    self.bank = money
     self.hand = hand
     validate!
   end
@@ -23,7 +23,7 @@ class Player
   end
 
   def profit_margin(value)
-    self.bank = bank.to_i + value
+    self.bank = bank + value
   end
 
   def get_card(card)

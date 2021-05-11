@@ -24,13 +24,13 @@ class TerminalInterface
 
   def new_game
     puts 'Enter your name please:'
-    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: PileOfCards.new))
+    self.game = Gamelogic.new(Player.new(name: gets.chomp, money: 100, hand: Deck.new))
     self.game_state = 'play'
   end
 
   def cycle
     interface until exit_status
-  rescue GameHandler::NotEnoughMoneyError => e    
+  rescue GameHandler::NotEnoughMoneyError => e
     self.game_state = 'menu'
     puts 'Not enough money!'
     cycle
@@ -91,7 +91,7 @@ class TerminalInterface
       self.exit_status = true
     end
   end
-  
+
   def reaction(state)
     raise "You got #{state}" unless state.nil?
   end

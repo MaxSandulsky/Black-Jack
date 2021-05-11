@@ -3,8 +3,8 @@
 # and open the template in the editor.
 
 class Card
-  COURTS = %w[J D K A].freeze
-  SUITS = ['♠', '♣', '♥', '♦'].freeze
+  COURTS = (2..10).to_a + %w[J D K A]
+  SUITS = %w[♠ ♣ ♥ ♦]
 
   include Validations
 

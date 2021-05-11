@@ -2,7 +2,7 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 
-class PileOfCards
+class Deck
   include Validations
 
   attr_accessor :cards
@@ -10,7 +10,7 @@ class PileOfCards
   validate var: 'cards', val: 'array_type', arg: 'Card'
 
   def initialize(cards = [])
-    self.cards = Array(cards)
+    self.cards = cards
     validate!
   end
 
@@ -46,15 +46,7 @@ class PileOfCards
     cards.pop
   end
 
-  def self.newdeck(number = 1)
-    values = (2..10).to_a
-    values += Card::COURTS
-    deck_template = []
-    Card::SUITS.each { |suit| deck_template += (values.map { |card| card.to_s + suit.to_s }) }
-    deck = []
-    number.times do
-      deck_template.each { |value| deck.push(Card.new(value)) }
-    end
-    PileOfCards.new(deck)
+  def generate_cards
+    Card::COURTS.each { |court| Card::SUITS.each { |suit| cards.push(Card.new("#{court}#{suit}")) } }
   end
 end

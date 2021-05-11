@@ -18,7 +18,7 @@ module Validations
 
     def type(hash, obj)
       if obj.send(hash[:var]).class.to_s != hash[:arg].to_s && hash[:var].class.to_s != NilClass
-          raise "Wrong object type! Expected #{hash[:arg]}, but got #{obj.send(hash[:var]).class}" 
+        raise "Wrong object type! Expected #{hash[:arg]}, but got #{obj.send(hash[:var]).class}"
       end
     end
 
@@ -33,7 +33,7 @@ module Validations
     def array_type(hash, obj)
       obj.send(hash[:var]).each do |attribute|
         if attribute.class.to_s != hash[:arg].to_s && attribute.class.to_s != NilClass
-            raise "Wrong object type! Expected #{hash[:arg]}, but got #{attribute.class}"
+          raise "Wrong object type! Expected #{hash[:arg]}, but got #{attribute.class}"
         end
       end
     end

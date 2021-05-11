@@ -5,20 +5,20 @@
 class Dealer < Player
   include Validations
 
-  attr_reader :pile
+  attr_reader :deck
 
   validate var: 'name', val: 'type', arg: 'String'
-  validate var: 'hand', val: 'type', arg: 'PileOfCards'
-  validate var: 'pile', val: 'type', arg: 'PileOfCards'
+  validate var: 'hand', val: 'type', arg: 'Deck'
+  validate var: 'deck', val: 'type', arg: 'Deck'
 
-  def initialize(money:, hand:, pile:)
-    self.pile = pile
+  def initialize(money:, hand:, deck:)
+    self.deck = deck
     super(name: 'Dealer', money: money, hand: hand)
     validate!
   end
 
   def draw_card
-    pile.draw
+    deck.draw
   end
 
   def reveal
@@ -26,8 +26,9 @@ class Dealer < Player
   end
 
   def shuffle
-    self.pile = PileOfCards.newdeck
-    pile.mixer!
+    drop_deck
+    self.deck.generate_cards
+    deck.mixer!
   end
 
   def get_card
@@ -35,10 +36,14 @@ class Dealer < Player
   end
 
   def length
-    pile.cards.length
+    deck.cards.length
+  end
+  
+  def drop_deck
+    deck.erase
   end
 
   protected
 
-  attr_writer :pile
+  attr_writer :deck
 end
